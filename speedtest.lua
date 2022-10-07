@@ -127,9 +127,7 @@ function GetIpInfo()
     if not status then
         error(err)
     end
-
-    io.stdout:write(output)
-    return json.decode(output)
+    return output
 end
 
 function GetServersList()
@@ -138,6 +136,9 @@ function GetServersList()
         error(err)
     end
 
+    if not handle:read() then
+        
+    end
     local e = curl.easy({
         url = ServersList,
         useragent = UserAgent,
@@ -147,32 +148,32 @@ function GetServersList()
     if not status then
         error(err)
     end
-
+    handle:close()
 end
 
 function GetBestServer()
-    -- GetServersList()
+    GetServersList()
     local file, err = io.open(ServersListFile, "r")
     if not file then
         error(err)
     end
     local servers = json.decode(file:read("a"))
-    -- local country = GetIpInfo().country
-
-    -- print(country)
+    local country = json.decode(GetIpInfo()).country
+    print(servers.servers)
 
     -- for i, server in ipairs(servers) do
     --     if server.Country == country then
-    --         local e = curl.easy({
-    --             url = server.Host.."/hello",
-    --             useragent = UserAgent,
-    --             nobody = true,
-    --             followlocation = true
-    --         })
-    --         local status, err = pcall(e.perform, e)
-    --         if status then
-    --             print(e.getinfo(curl.INFO_CONNECT_TIME))
-    --         end
+    --         print(server.Host)
+    --         -- local e = curl.easy({
+    --         --     url = server.Host.."/hello",
+    --         --     useragent = UserAgent,
+    --         --     nobody = true,
+    --         --     followlocation = true
+    --         -- })
+    --         -- local status, err = pcall(e.perform, e)
+    --         -- if status then
+    --         --     print(e.getinfo(curl.INFO_CONNECT_TIME))
+    --         -- end
     --     end
     -- end
 
@@ -198,7 +199,7 @@ function main()
     elseif args.upload then
         UploadTest(args.upload)
     elseif args.ip then
-        GetIpInfo()
+        io.stdout:write(GetIpInfo())
     elseif args.servers_list then
         GetServersList()
     elseif args.best_server then
