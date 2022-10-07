@@ -151,34 +151,12 @@ function GetServersList()
 end
 
 function GetBestServer()
-    print(json.decode([[ [ {
-        "Country": "Zimbabwe",
-        "City": "Harare, Harare",
-        "Provider": "Telone",
-        "Host": "speedtest1.telone.co.zw:8080",
-        "ID": 8301
-      },
-      {
-        "Country": "Zimbabwe",
-        "City": "Mutare",
-        "Provider": "ZOL Zimbabwe",
-        "Host": "mutare-speedtest.zol.co.zw:8080",
-        "ID": 4691
-      },
-      {
-        "Country": "ZW",
-        "City": "Harare",
-        "Provider": "ZOL Zimbabwe",
-        "Host": "www.fast.co.zw:8080",
-        "ID": 16656
-      }
-    ] ]]))
     -- GetServersList()
-    -- local file, err = io.open(ServersListFile, "r")
-    -- if not file then
-    --     error(err)
-    -- end
-    -- local servers = json.decode(file:read("a"))
+    local file, err = io.open(ServersListFile, "r")
+    if not file then
+        error(err)
+    end
+    local servers = json.decode(file:read("a"))
     -- local country = GetIpInfo().country
 
     -- print(country)
